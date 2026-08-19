@@ -1,0 +1,2 @@
+- Read on downsampling further and recreate said algortithm from scratch.
+- Recreate a simple FFT algorithm to replace the built-in Numpy one.
