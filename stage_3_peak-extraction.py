@@ -1,4 +1,5 @@
-#
+#this is the part where we extract meaningful data from each song that can be used to make
+#each song uniquely identifiable. However even after all this, it is still fragile. 
 
 
 from scipy.io import wavfile
