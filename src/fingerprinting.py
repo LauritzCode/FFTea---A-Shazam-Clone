@@ -35,7 +35,7 @@ def spectrogram(path):
 def extract_constellation(song_frequency, freq_axis, timestamps):
     constellation = []
 
-    bands = np.geomspace(10, 44100//8 ,num=7)
+    bands = np.geomspace(10, 48000//8 ,num=7)
 
     for i in range(len(song_frequency)):
         frame_peaks = []
