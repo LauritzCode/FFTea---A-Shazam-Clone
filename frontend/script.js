@@ -9,68 +9,21 @@ const modalClose = document.getElementById("modal-close");
 
 let isListening = false;
 
-const CHUNK_MS = 3000;
-const MAX_ATTEMPTS = 15;
-
 button.addEventListener("click", () => {
   if (isListening) return;
   startListening();
 });
 
-// records for `durationMs` off an already-open microphone stream and
-// resolves with whatever audio it captured
-function recordChunk(stream, durationMs) {
-  return new Promise((resolve) => {
-    const pieces = [];
-    const recorder = new MediaRecorder(stream);
-    recorder.addEventListener("dataavailable", (event) => pieces.push(event.data));
-    recorder.addEventListener("stop", () => resolve(new Blob(pieces, { type: recorder.mimeType })));
-    recorder.start();
-    setTimeout(() => recorder.stop(), durationMs);
-  });
-}
-
-function uploadChunk(blob) {
-  const formData = new FormData();
-  formData.append("audio", blob, "chunk");
-  return fetch("/api/identify-chunk", { method: "POST", body: formData })
-    .then(response => response.json());
-}
-
-async function startListening() {
+function startListening() {
   isListening = true;
   button.classList.add("listening");
   label.textContent = "Listening";
   hint.textContent = "Give it a few seconds...";
 
-  let stream;
-  try {
-    stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-  } catch (error) {
-    showResult(null, "Couldn't access your microphone");
-    return;
-  }
-
-  let title = null;
-  let failureMessage = null;
-
-  try {
-    await fetch("/api/identify-start", { method: "POST" });
-
-    for (let attempt = 0; attempt < MAX_ATTEMPTS; attempt++) {
-      const blob = await recordChunk(stream, CHUNK_MS);
-      const result = await uploadChunk(blob);
-      if (result.found) {
-        title = result.title;
-        break;
-      }
-    }
-  } catch (error) {
-    failureMessage = "Something went wrong, try again";
-  }
-
-  stream.getTracks().forEach(track => track.stop());
-  showResult(title, failureMessage);
+  fetch("/api/identify", { method: "POST" })
+    .then(response => response.json())
+    .then(data => showResult(data.title))
+    .catch(() => showResult(null));
 }
 
 function showResult(title, failureMessage) {

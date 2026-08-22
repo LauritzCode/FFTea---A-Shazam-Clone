@@ -22,7 +22,7 @@ def live_identify_recording():
 
         if len(tally) > 0:
             match = Counter(tally).most_common(1)[0][1]
-            if match > 4:
+            if match > 10:
                 break
 
         elapsed = elapsed + 1
