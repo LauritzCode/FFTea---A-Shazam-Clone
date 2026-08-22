@@ -51,20 +51,26 @@ async function startListening() {
     return;
   }
 
-  await fetch("/api/identify-start", { method: "POST" });
-
   let title = null;
-  for (let attempt = 0; attempt < MAX_ATTEMPTS; attempt++) {
-    const blob = await recordChunk(stream, CHUNK_MS);
-    const result = await uploadChunk(blob);
-    if (result.found) {
-      title = result.title;
-      break;
+  let failureMessage = null;
+
+  try {
+    await fetch("/api/identify-start", { method: "POST" });
+
+    for (let attempt = 0; attempt < MAX_ATTEMPTS; attempt++) {
+      const blob = await recordChunk(stream, CHUNK_MS);
+      const result = await uploadChunk(blob);
+      if (result.found) {
+        title = result.title;
+        break;
+      }
     }
+  } catch (error) {
+    failureMessage = "Something went wrong, try again";
   }
 
   stream.getTracks().forEach(track => track.stop());
-  showResult(title);
+  showResult(title, failureMessage);
 }
 
 function showResult(title, failureMessage) {

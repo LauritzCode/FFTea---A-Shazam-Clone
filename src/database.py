@@ -21,6 +21,10 @@ cur.execute("""
     )
 """)
 
+# hash_match() looks up rows by hash on every single call, many times per
+# chunk, without this the database has to scan the entire table every time
+cur.execute("CREATE INDEX IF NOT EXISTS idx_fingerprints_hash ON fingerprints (hash)")
+
 con.commit()
 
 
