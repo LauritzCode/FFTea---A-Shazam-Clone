@@ -1,6 +1,6 @@
 # FFTea
 
-A Shazam clone built from 'scratch' in Python. Give it a few seconds of audio through a microphone and it tells you what song is playing, using a fingerprinting algorithm I wrote myself. Video demos can be found on my portfolio site: [https://lauritz-portfolio.netlify.app/projects/audio-fingerprinting](https://lauritz-portfolio.netlify.app/projects/audio-fingerprinting)
+A Shazam clone built from 'scratch' in Python. Give it a few seconds of audio through a microphone and it tells you what song is playing, using a fingerprinting algorithm I wrote myself. Video demos can be found on my portfolio site: https://lauritz-portfolio.netlify.app/projects/audio-fingerprinting
 
 ![Front end finding a song](Docs/front_end_song_found.png)
 
