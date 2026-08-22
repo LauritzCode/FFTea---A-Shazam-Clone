@@ -3,7 +3,7 @@ import os
 
 db_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "fingerprints.db")
 
-con = sqlite3.connect(db_path)
+con = sqlite3.connect(db_path, check_same_thread=False)
 cur = con.cursor()
 
 cur.execute("""

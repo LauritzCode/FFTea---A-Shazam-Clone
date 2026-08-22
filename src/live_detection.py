@@ -1,3 +1,4 @@
+import os
 from collections import Counter
 from detection import identify_recording
 from add_song import process_recording
@@ -6,7 +7,8 @@ from database import title_extract
 def live_identify_recording():
     tally = []
     elapsed = 0
-    path = "temp_recs/rec.wav"
+    src_dir = os.path.dirname(os.path.abspath(__file__))
+    path = os.path.join(src_dir, "temp_recs", "rec.wav")
 
     while True:
         print("searching...")
@@ -27,5 +29,6 @@ def live_identify_recording():
 
     return title_extract(Counter(tally).most_common(1)[0][0][0])
 
-title = live_identify_recording()
-print(title)
+if __name__ == "__main__":
+    title = live_identify_recording()
+    print(title)
